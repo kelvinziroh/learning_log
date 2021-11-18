@@ -6,16 +6,23 @@
 
 {% block content %}
 
-    <ul style="padding: 10px 0;">
-        {% for topic in topics %}
-            <li style="list-style-type: none;"> 
-                <h4><a href="{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a></h4>
-            </li>
-        {% empty %}
-            <li><h3>No list has been added yet.</h3></li>
-        {% endfor %}
-    </ul>
-
-    <h3><a href="{% url 'learning_logs:new_topic' %}">Add a new topic</a></h3>
+    <p>
+        <a class="btn btn-primary btn-lg" href="{% url 'learning_logs:new_topic' %}">New topic</a> 
+    </p>
+    
+        <table class="table table-hover table-striped">
+            {% for topic in topics %}
+                <tr>
+                    <td><a href="{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a></td>
+                    <td align="right">
+                        <a class="btn btn-outline-secondary btn-sm" href="{% url 'learning_logs:edit_topic' topic.id %}">Edit topic</a>
+                        <a class="btn btn-outline-danger btn-sm" href="{% url 'learning_logs:delete_topic' topic.id %}">Delete topic</a>
+                    </td>                
+                </tr> 
+            {% empty %}
+                <p>No topic has been added yet</p>
+            {% endfor %}
+        </table>
+   
 
 {% endblock content %}

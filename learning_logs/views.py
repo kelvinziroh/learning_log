@@ -59,6 +59,42 @@ def new_topic(request):
 
 
 @login_required
+def edit_topic(request, topic_id):
+    """Edit a topic."""
+    topic = Topic.objects.get(id=topic_id)
+
+    # make sure the entry belongs to the user.
+    check_topic_owner(request, topic)
+
+    if request.method != 'POST':
+        # Initial request; pre-fill form with the current topic.
+        form = TopicForm(instance=topic)
+    else:
+        # POST data submitted; process data.
+        form = TopicForm(instance=topic, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('learning_logs:topics')
+
+    context = {'topic': topic, 'form': form}
+    return render(request, 'learning_logs/edit_topic.html', context)
+
+
+@login_required
+def delete_topic(request, topic_id):
+    """Delete a topic."""
+    topic = Topic.objects.get(id=topic_id)
+
+    # make sure the topic belongs to the user
+    check_topic_owner(request, topic)
+
+    # delete a topic
+    topic.delete()
+
+    return redirect('learning_logs:topics')
+
+
+@login_required
 def new_entry(request, topic_id):
     """Add a new entry for a particular topic."""
     topic = Topic.objects.get(id=topic_id)
@@ -104,3 +140,18 @@ def edit_entry(request, entry_id):
 
     context = {'entry': entry, 'topic': topic, 'form': form}
     return render(request, 'learning_logs/edit_entry.html',context)
+
+
+@login_required
+def delete_entry(request, entry_id):
+    """Delete an entry."""
+    entry = Entry.objects.get(id=entry_id)
+    topic = entry.topic
+
+    # make sure the entry belongs to the user.
+    check_topic_owner(request, topic)
+
+    # delete the entry
+    entry.delete()
+
+    return redirect('learning_logs:topic', topic_id=topic.id)
