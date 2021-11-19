@@ -18,10 +18,21 @@ def check_topic_owner(request, topic):
         raise Http404
 
 
+def slice_list_strings(strings):
+    """Slice strings that have a length greater than 14 characters."""
+    for string in strings:
+        if len(string.text) > 14:
+            string.text = f"{string.text[:14]}..."
+            
+
 @login_required
 def topics(request):
     """Show all topics."""
     topics = Topic.objects.filter(owner=request.user).order_by('date_added')
+
+    # slice topics with a length greater than 14 characters
+    slice_list_strings(topics)
+
     context = {'topics': topics}
     return render(request, 'learning_logs/topics.html', context)
 

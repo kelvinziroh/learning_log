@@ -15,8 +15,8 @@
                 <tr>
                     <td><a href="{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a></td>
                     <td align="right">
-                        <a class="btn btn-outline-secondary btn-sm" href="{% url 'learning_logs:edit_topic' topic.id %}">Edit topic</a>
-                        <a class="btn btn-outline-danger btn-sm" href="{% url 'learning_logs:delete_topic' topic.id %}">Delete topic</a>
+                        <a class="btn btn-outline-secondary btn-sm" href="{% url 'learning_logs:edit_topic' topic.id %}">Edit</a>
+                        <a class="btn btn-outline-danger btn-sm" href="{% url 'learning_logs:delete_topic' topic.id %}">Delete</a>
                     </td>                
                 </tr> 
             {% empty %}
